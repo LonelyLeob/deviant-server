@@ -11,7 +11,7 @@ class GeoPosMiddleware:
         ip = self._process_geo_pos(request)
         if ip:
             g = GeoIP2()
-            human = Human.objects.create(city=g.city(ip), country=g.country_name(ip))
+            human = Human.objects.create(city=g.city(ip)["city"], country=g.country_name(ip))
             human.save()
         return response
 
