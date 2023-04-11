@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-vto8m-jj3k0om0mh#3wr)f^+f@cn-m(x1n+mwqi8km(y31u1@6
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
     'deviant-girls.online',
     'deviant-girls.ru',
 ]

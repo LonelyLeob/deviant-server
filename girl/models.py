@@ -26,7 +26,7 @@ class Link(models.Model):
     pic = models.ImageField("Лого источника", upload_to=upload_to_logos)
 
     def __str__(self) -> str:
-        return f"Ресурс {self.title} для {self.girl.slug}"
+        return f"Ресурс для {self.girl.slug}"
     
     class Meta:
         verbose_name = 'Ссылка'

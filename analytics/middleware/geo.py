@@ -10,7 +10,7 @@ class GeoPosMiddleware:
         response = self._get_response(request)
         ip = self._process_geo_pos(request)
         if ip:
-            if not Geo.objects.all(ip=ip).exists():
+            if not Geo.objects.filter(ip=ip).exists():
                 g = GeoIP2()
                 human = Geo.objects.create(city=g.city(ip)["city"], country=g.country_name(ip), ip=ip)
                 human.save()

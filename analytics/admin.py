@@ -2,5 +2,5 @@ from django.contrib import admin
 from .models import Geo
 
 @admin.register(Geo)
-class HumanAdmin(admin.ModelAdmin):
+class GeoAdmin(admin.ModelAdmin):
     list_display = ['country', 'city']
