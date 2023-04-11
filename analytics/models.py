@@ -7,3 +7,6 @@ class Geo(models.Model):
 
     def __str__(self) -> str:
         return f"Уникальный посетитель с ip {self.ip}"
+    
+class App(models.Model):
+    app_name = models.CharField("Приложение", max_length=200)
