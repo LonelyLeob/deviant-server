@@ -11,9 +11,9 @@ class GeoPosMiddleware:
         ip = self._process_geo_pos(request)
         if ip:
             if not Geo.objects.filter(ip=ip).exists():
-                g = GeoIP2()
-                human = Geo.objects.create(city=g.city(ip)["city"], country=g.country_name(ip), ip=ip)
-                human.save()
+                geocoder = GeoIP2()
+                geopos = Geo.objects.create(city=geocoder.city(ip)["city"], country=geocoder.country_name(ip), ip=ip)
+                geopos.save()
         return response
 
     def _process_geo_pos(self, request: HttpRequest):

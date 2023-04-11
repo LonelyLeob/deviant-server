@@ -25,7 +25,7 @@ class Avatar(models.Model):
         verbose_name = 'Аватар'
         verbose_name_plural = 'Аватары'
 
-receiver(models.signals.post_delete, sender=Avatar)
+@receiver(models.signals.post_delete, sender=Avatar)
 def post_save_image(sender, instance, *args, **kwargs):
     try:
         instance.avatar.delete(save=False)
@@ -55,6 +55,7 @@ class Link(models.Model):
     girl = models.ForeignKey(Girl, on_delete=models.PROTECT, related_name="links", verbose_name="Девочка")
     link = models.URLField("Ссылка на источник", max_length=200)
     pic = models.ImageField("Лого источника", upload_to=upload_to_logos)
+    flag = models.BooleanField("Заглавная ссылка?", default=False)
 
     def __str__(self) -> str:
         return f"Ресурс для {self.girl.slug}"

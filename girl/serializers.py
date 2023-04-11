@@ -5,7 +5,7 @@ class LinkSerializer(serializers.ModelSerializer):
     pic = serializers.ImageField()
     class Meta:
         model = Link
-        fields = ['title', 'link', 'pic']
+        fields = ['title', 'link', 'pic', 'flag']
 
 class AvatarSerializer(serializers.ModelSerializer):
     avatar = serializers.ImageField()
