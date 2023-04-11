@@ -26,7 +26,10 @@ SECRET_KEY = 'django-insecure-vto8m-jj3k0om0mh#3wr)f^+f@cn-m(x1n+mwqi8km(y31u1@6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'deviant-girls.online',
+    'deviant-girls.ru',
+]
 
 
 # Application definition
