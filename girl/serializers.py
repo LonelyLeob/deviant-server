@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Girl, Link
+from .models import Girl, Link, Avatar
 
 class LinkSerializer(serializers.ModelSerializer):
     pic = serializers.ImageField()
@@ -7,10 +7,16 @@ class LinkSerializer(serializers.ModelSerializer):
         model = Link
         fields = ['title', 'link', 'pic']
 
-class GirlSerializer(serializers.ModelSerializer):
+class AvatarSerializer(serializers.ModelSerializer):
     avatar = serializers.ImageField()
+    class Meta:
+        model = Avatar
+        fields = ['avatar']
+
+class GirlSerializer(serializers.ModelSerializer):
     links = LinkSerializer(many=True)
+    avatars = AvatarSerializer(many=True)
 
     class Meta:
         model = Girl
-        fields = ['avatar', 'nickname', 'additional_info',  'links']
+        fields = ['avatars', 'nickname', 'additional_info',  'links']
