@@ -13,13 +13,10 @@ class SkipperMiddleware:
             geocoder = GeoIP2()
             if geocoder.country_name() == "Russia":
                 if len(request.path.split("/")) >= 2:
-                    try:
-                        girl_slug = request.path.split("/")[2]
-                        girl = Girl.objects.filter(slug=girl_slug).first()
-                        tg_link_to_redirect = girl.links.filter(title = "Telegram").first().link
-                        return HttpResponseRedirect(tg_link_to_redirect)
-                    except IndexError as e:
-                        print(f"Другой url")
+                    girl_slug = request.path.split("/")[2]
+                    girl = Girl.objects.filter(slug=girl_slug).first()
+                    tg_link_to_redirect = girl.links.filter(title = "Telegram").first().link
+                    return HttpResponseRedirect(tg_link_to_redirect)
         return self._get_response(request)
 
     def _process_ip(self, request: HttpRequest):

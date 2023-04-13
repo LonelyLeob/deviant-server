@@ -8,6 +8,7 @@ def upload_to_girls(instance, filename):
 class Girl(models.Model):
     nickname = models.CharField("Псевдоним", max_length=50)
     additional_info = models.CharField("Добавочное описание", max_length=200)
+    domain = models.CharField("Домен девушки", max_length=200)
     slug = models.SlugField("Ярлык для URL")
 
     def __str__(self) -> str:

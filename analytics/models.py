@@ -8,5 +8,21 @@ class Geo(models.Model):
     def __str__(self) -> str:
         return f"Уникальный посетитель с ip {self.ip}"
     
-class App(models.Model):
-    app_name = models.CharField("Приложение", max_length=200)
+    class Meta:
+        verbose_name = "Данные по гео"
+        verbose_name_plural = "Данные по гео"
+    
+class Source(models.Model):
+    name = models.CharField("Название источника", max_length=50)
+    description = models.CharField("Дескриптор", max_length=50)
+
+    class Meta:
+        verbose_name = "Источник"
+        verbose_name_plural = "Источники"
+
+class Mark(models.Model):
+    app=models.ForeignKey(Source, verbose_name="Название источника", on_delete=models.CASCADE, related_name="marks")
+
+    class Meta:
+        verbose_name = "Данные по источникам"
+        verbose_name_plural = "Данные по источникам"
