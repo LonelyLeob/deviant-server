@@ -8,7 +8,7 @@ class GeoPosMiddleware:
 
     def __call__(self, request: HttpRequest):
         response = self._get_response(request)
-        ip = self._process_geo_pos(request)
+        ip = self._process_ip(request)
         if ip:
             if not Geo.objects.filter(ip=ip).exists():
                 geocoder = GeoIP2()
@@ -16,7 +16,7 @@ class GeoPosMiddleware:
                 geopos.save()
         return response
 
-    def _process_geo_pos(self, request: HttpRequest):
+    def _process_ip(self, request: HttpRequest):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
             ip = x_forwarded_for.split(',')[0]

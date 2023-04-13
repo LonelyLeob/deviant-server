@@ -12,6 +12,10 @@ class Girl(models.Model):
 
     def __str__(self) -> str:
         return self.nickname
+
+    @property
+    def links(self):
+        return self.links_set.all()
     
     class Meta:
         verbose_name = 'Девочка'
@@ -47,14 +51,11 @@ def pre_save_image(sender, instance, *args, **kwargs):
     except:
         pass
 
-def upload_to_logos(_, filename):
-    return f"logos/{filename}"
 
 class Link(models.Model):
     title = models.CharField("Название ссылки", max_length=200)
     girl = models.ForeignKey(Girl, on_delete=models.PROTECT, related_name="links", verbose_name="Девочка")
     link = models.URLField("Ссылка на источник", max_length=200)
-    pic = models.ImageField("Лого источника", upload_to=upload_to_logos)
     flag = models.BooleanField("Заглавная ссылка?", default=False)
 
     def __str__(self) -> str:
