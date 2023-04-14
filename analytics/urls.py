@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import set_utm_and_redirect
+from .views import set_utm
 
 urlpatterns = [
-    path('', set_utm_and_redirect)
+    path('', set_utm)
 ]

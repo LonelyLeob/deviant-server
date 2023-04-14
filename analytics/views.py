@@ -1,14 +1,17 @@
-from django.http import HttpResponseRedirect, HttpRequest
+from django.http import HttpRequest, HttpResponseRedirect
 from .models import Mark, Source
-from girl.models import Girl
 
-def set_utm_and_redirect(request: HttpRequest):
+def set_utm(request: HttpRequest):
     app = request.GET.get('app')
-    source = Source.objects.get(name=app)
-    Mark.objects.create(app=source).save()
-    girl_slug = request.GET.get('your_girl')
-    if not girl_slug:
-        return HttpResponseRedirect("https://"+"yankawildy.fun")
-    girl_domain = Girl.objects.filter(slug=girl_slug).first().domain
-    if girl_domain:
-        return HttpResponseRedirect("https://"+girl_domain)
+    if app:
+        source = Source.objects.get(shortcut=app)
+        Mark.objects.create(app=source).save()
+    else:
+        if not Source.objects.filter(name='Другое').exists():
+            source = Source.objects.create(name='Напрямую', description='Пользователь подключился напрямую', shortcut='-')
+            source.save()
+            Mark.objects.create(app=source).save()
+        else:
+            source = Source.objects.filter(name='Другое')
+            Mark.objects.create(app=source).save()
+    return HttpResponseRedirect("https://yankawildy.fun")

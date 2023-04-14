@@ -26,6 +26,9 @@ class Avatar(models.Model):
     avatar = models.ImageField("Фото девочки", upload_to=upload_to_girls)
     girl = models.ForeignKey(Girl, verbose_name="Связь к девочке", on_delete=models.CASCADE, related_name="avatars")
 
+    def __str__(self) -> str:
+        return f"Аватар для {self.girl}"
+
     class Meta:
         verbose_name = 'Аватар'
         verbose_name_plural = 'Аватары'

@@ -11,4 +11,4 @@ class MarkAdmin(admin.ModelAdmin):
 
 @admin.register(Source)
 class SourceAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
+    list_display = ['name', 'shortcut','description']
