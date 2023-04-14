@@ -5,7 +5,7 @@ class Geo(models.Model):
     country = models.CharField("Страна", max_length=50)
     city = models.CharField("Город", max_length=50)
     ip = models.GenericIPAddressField("IP запроса", protocol="both", unpack_ipv4=False)
-    visited_at = models.DateTimeField("Дата визита", default=timezone.now)
+    visited_at = models.DateTimeField("Дата визита", default=timezone.now, editable=False)
 
     def __str__(self) -> str:
         return f"Уникальный посетитель с ip {self.ip}"
@@ -28,7 +28,8 @@ class Source(models.Model):
 
 class Mark(models.Model):
     app=models.ForeignKey(Source, verbose_name="Название источника", on_delete=models.CASCADE, related_name="marks")
-    visited_at = models.DateTimeField("Дата визита", default=timezone.now)
+    visited_at = models.DateTimeField("Дата визита", default=timezone.now, editable=False)
+    ip = models.GenericIPAddressField("IP запроса", protocol="both", unpack_ipv4=False)
 
     def __str__(self) -> str:
         return f"Метка от источника {self.app}"
