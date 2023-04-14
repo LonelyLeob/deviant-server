@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponseRedirect
+from django.http import HttpRequest
 from .models import Mark, Source
 
 def set_utm(request: HttpRequest):
@@ -23,4 +23,3 @@ def set_utm(request: HttpRequest):
         else:
             source = Source.objects.filter(name='Напрямую').first()
             Mark.objects.create(app=source).save()
-    return HttpResponseRedirect("https://yankawildy.fun")
