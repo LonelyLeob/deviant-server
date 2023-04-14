@@ -28,6 +28,7 @@ class Source(models.Model):
 
 class Mark(models.Model):
     app=models.ForeignKey(Source, verbose_name="Название источника", on_delete=models.CASCADE, related_name="marks")
+    visited_at = models.DateTimeField("Дата визита", default=timezone.now)
 
     def __str__(self) -> str:
         return f"Метка от источника {self.app}"
