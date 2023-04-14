@@ -1,4 +1,4 @@
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from .models import Mark, Source
 
 def set_utm(request: HttpRequest):
@@ -23,3 +23,4 @@ def set_utm(request: HttpRequest):
         else:
             source = Source.objects.filter(name='Напрямую').first()
             Mark.objects.create(app=source).save()
+    return HttpResponse('')
