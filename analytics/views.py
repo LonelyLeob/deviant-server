@@ -13,7 +13,7 @@ def set_utm(request: HttpRequest):
                 source.save()
                 Mark.objects.create(app=source).save()
             else:
-                source = Source.objects.filter(name='Не опознано')
+                source = Source.objects.filter(name='Не опознано').first()
                 Mark.objects.create(app=source).save()
     else:
         if not Source.objects.filter(name='Напрямую').exists():
@@ -21,6 +21,6 @@ def set_utm(request: HttpRequest):
             source.save()
             Mark.objects.create(app=source).save()
         else:
-            source = Source.objects.filter(name='Напрямую')
+            source = Source.objects.filter(name='Напрямую').first()
             Mark.objects.create(app=source).save()
     return HttpResponseRedirect("https://yankawildy.fun")
