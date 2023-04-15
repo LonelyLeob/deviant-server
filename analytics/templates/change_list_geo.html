@@ -9,6 +9,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const chartData = {{ chart_data | safe }};
+        chartData[chartData.length-1] = {country: "Другое", requests: chartData[chartData.length-1]}
+        console.log(chartData)
         let country_list = []
         let req_list = []
         chartData.forEach((v, i, arr) => {
@@ -32,8 +34,13 @@
               y: {
                 beginAtZero: true
               }
+            },
+            plugins: {
+                customCanvasBackgroundColor: {
+                  color: 'lightGreen',
+                }
+              },
             }
-          }
         });
     });
     </script>
