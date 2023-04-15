@@ -20,12 +20,12 @@ def set_utm(request: HttpRequest):
             else:
                 source = Source.objects.filter(name='Не опознано').first()
                 Mark.objects.create(app=source, ip=ip).save()
-    else:
-        if not Source.objects.filter(name='Напрямую').exists():
-            source = Source.objects.create(name='Напрямую', description='Пользователь подключился напрямую', shortcut='-')
-            source.save()
-            Mark.objects.create(app=source, ip=ip).save()
-        else:
-            source = Source.objects.filter(name='Напрямую').first()
-            Mark.objects.create(app=source, ip=ip).save()
+    # else:
+    #     if not Source.objects.filter(name='Напрямую').exists():
+    #         source = Source.objects.create(name='Напрямую', description='Пользователь подключился напрямую', shortcut='-')
+    #         source.save()
+    #         Mark.objects.create(app=source, ip=ip).save()
+    #     else:
+    #         source = Source.objects.filter(name='Напрямую').first()
+    #         Mark.objects.create(app=source, ip=ip).save()
     return HttpResponse('')
