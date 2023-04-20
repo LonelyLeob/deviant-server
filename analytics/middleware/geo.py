@@ -7,7 +7,6 @@ class SimpleMiddleware:
         self._get_response = get_response
 
     def __call__(self, request: HttpRequest):
-        response = self._get_response(request)
         ip = self._process_ip(request)
         if ip and ip != "127.0.0.1":
             geocoder = GeoIP2()
@@ -18,7 +17,7 @@ class SimpleMiddleware:
                 counter.save()
             else:
                 GeoCounter.objects.create(country=country).save()
-        return response
+        return self._get_response(request)
 
     def _process_ip(self, request: HttpRequest):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')

@@ -7,11 +7,10 @@ class SimpleMiddleware:
         self._get_response = get_response
 
     def __call__(self, request: HttpRequest):
-        response = self._get_response(request)
         ip = self._process_ip(request)
         if ip:
             Guest.objects.create(ip=ip).save() if not Guest.objects.filter(ip=ip).exists() else True
-        return response
+        return self._get_response(request)
 
     def _process_ip(self, request: HttpRequest):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')

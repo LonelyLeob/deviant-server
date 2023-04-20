@@ -7,9 +7,7 @@ class SimpleMiddleware:
         self._get_response = get_response
 
     def __call__(self, request: HttpRequest):
-        response = self._get_response(request)
         app = request.GET.get('app')
-        ip = self._process_ip(request)
         if app:
             if Source.objects.filter(shortcut=app).exists():
                 source = Source.objects.get(shortcut=app)
@@ -33,7 +31,7 @@ class SimpleMiddleware:
             else:
                 source = Source.objects.filter(name='Напрямую').first()
                 Mark.objects.create(app=source).save()
-        return response
+        return self._get_response(request)
 
     def _process_ip(self, request: HttpRequest):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
