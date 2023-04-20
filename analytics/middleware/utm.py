@@ -7,10 +7,6 @@ class SimpleMiddleware:
         self._get_response = get_response
 
     def __call__(self, request: HttpRequest):
-        self.process_request()
-        self._get_response(request)
-
-    def __call__(self, request: HttpRequest):
         app = request.GET.get('app')
         if app:
             if Source.objects.filter(shortcut=app).exists():
