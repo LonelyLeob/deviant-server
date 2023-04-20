@@ -9,7 +9,6 @@ class SimpleMiddleware:
     def __call__(self, request: HttpRequest):
         response = self._get_response(request)
         app = request.GET.get('app')
-        print("я здесь")
         if app:
             if Source.objects.filter(shortcut=app).exists():
                 source = Source.objects.get(shortcut=app)
