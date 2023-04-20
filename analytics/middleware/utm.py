@@ -11,26 +11,36 @@ class SimpleMiddleware:
         if app:
             if Source.objects.filter(shortcut=app).exists():
                 source = Source.objects.get(shortcut=app)
-                Mark.objects.create(app=source).save()
+                mark = Mark.objects.get(app=source)
+                mark.requests_counter+=1
+                mark.save()
             else:
                 if not Source.objects.filter(name='Не опознано').exists():
                     source = Source.objects.create(name='Не опознано',
                                                 description='Пользователь подключился из неопознанного источника',
                                                 shortcut='-')
                     source.save()
-                    Mark.objects.create(app=source).save()
+                    mark = Mark.objects.get(app=source)
+                    mark.requests_counter+=1
+                    mark.save()
                 else:
                     source = Source.objects.get(name='Не опознано')
-                    Mark.objects.create(app=source).save()
+                    mark = Mark.objects.get(app=source)
+                    mark.requests_counter+=1
+                    mark.save()
         else:
             if not Source.objects.filter(name='Напрямую').exists():
                 source = Source.objects.create(name='Напрямую', description='Пользователь подключился напрямую',
                                             shortcut='-')
                 source.save()
-                Mark.objects.create(app=source).save()
+                mark = Mark.objects.get(app=source)
+                mark.requests_counter+=1
+                mark.save()
             else:
                 source = Source.objects.get(name='Напрямую')
-                Mark.objects.create(app=source).save()
+                mark = Mark.objects.get(app=source)
+                mark.requests_counter+=1
+                mark.save()
         return self._get_response(request)
 
     def _process_ip(self, request: HttpRequest):
