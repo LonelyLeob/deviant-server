@@ -11,12 +11,9 @@ class SimpleMiddleware:
         if ip and ip != "127.0.0.1":
             geocoder = GeoIP2()
             country = geocoder.country_name(ip)
-            if GeoCounter.objects.filter(country=country).exists():
-                counter = GeoCounter.objects.get(country=country)
-                counter.requests_counter+=1
-                counter.save()
-            else:
-                GeoCounter.objects.create(country=country).save()
+            counter = GeoCounter.objects.get_or_create(country=country)
+            counter.requests_counter+=1
+            counter.save()
         return self._get_response(request)
 
     def _process_ip(self, request: HttpRequest):

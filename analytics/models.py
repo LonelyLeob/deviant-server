@@ -14,7 +14,7 @@ class Guest(models.Model):
 
 class GeoCounter(models.Model):
     country = models.CharField("Страна", max_length=50)
-    requests_counter = models.IntegerField("Кол-во запросов", default=1)
+    requests_counter = models.IntegerField("Кол-во запросов", default=0)
 
     def __str__(self) -> str:
         return str(self.country)
@@ -38,7 +38,7 @@ class Source(models.Model):
 
 class Mark(models.Model):
     app = models.ForeignKey(Source, verbose_name="Название источника", on_delete=models.CASCADE, related_name="marks")
-    requests_counter = models.IntegerField("Кол-во запросов", default=1)
+    requests_counter = models.IntegerField("Кол-во запросов", default=0)
 
     def __str__(self) -> str:
         return f"Метка от источника {self.app}"

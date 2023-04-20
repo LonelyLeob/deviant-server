@@ -9,7 +9,7 @@ class SimpleMiddleware:
     def __call__(self, request: HttpRequest):
         ip = self._process_ip(request)
         if ip:
-            Guest.objects.create(ip=ip).save() if not Guest.objects.filter(ip=ip).exists() else True
+            Guest.objects.get_or_create(ip=ip)
         return self._get_response(request)
 
     def _process_ip(self, request: HttpRequest):
