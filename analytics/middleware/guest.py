@@ -6,7 +6,7 @@ class SimpleMiddleware:
     def __init__(self, get_response) -> None:
         self._get_response = get_response
 
-    def __call__(self, request: HttpRequest):
+    def process_request(self, request: HttpRequest):
         ip = self._process_ip(request)
         if ip:
             Guest.objects.create(ip=ip).save() if not Guest.objects.filter(ip=ip).exists() else True
