@@ -6,7 +6,7 @@ class SimpleMiddleware:
     def __init__(self, get_response) -> None:
         self._get_response = get_response
 
-    def process_request(self, request: HttpRequest):
+    def __call__(self, request: HttpRequest):
         ip = self._process_ip(request)
         if ip and ip != "127.0.0.1":
             geocoder = GeoIP2()
