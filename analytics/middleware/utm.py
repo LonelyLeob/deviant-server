@@ -20,7 +20,7 @@ class SimpleMiddleware:
                     source.save()
                     Mark.objects.create(app=source).save()
                 else:
-                    source = Source.objects.filter(name='Не опознано').first()
+                    source = Source.objects.get(name='Не опознано')
                     Mark.objects.create(app=source).save()
         else:
             if not Source.objects.filter(name='Напрямую').exists():
@@ -29,9 +29,9 @@ class SimpleMiddleware:
                 source.save()
                 Mark.objects.create(app=source).save()
             else:
-                source = Source.objects.filter(name='Напрямую').first()
+                source = Source.objects.get(name='Напрямую')
                 Mark.objects.create(app=source).save()
-        return 
+        return self._get_response(request)
 
     def _process_ip(self, request: HttpRequest):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')

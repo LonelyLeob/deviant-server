@@ -10,14 +10,18 @@ class Guest(models.Model):
     
     class Meta:
         verbose_name = 'Уникальный посетитель'
-        verbose_name_plural = 'Уникальные посетители'
+        verbose_name_plural = 'По уникальности'
 
 class GeoCounter(models.Model):
     country = models.CharField("Страна", max_length=50)
     requests_counter = models.IntegerField("Кол-во запросов", default=1)
 
     def __str__(self) -> str:
-        return 
+        return str(self.country)
+    
+    class Meta:
+        verbose_name = 'Геосчетчик'
+        verbose_name_plural = 'По странам'
 
 class Source(models.Model):
     name = models.CharField("Название источника", max_length=50)
@@ -41,4 +45,4 @@ class Mark(models.Model):
 
     class Meta:
         verbose_name = "Данные по источникам"
-        verbose_name_plural = "Данные по источникам"
+        verbose_name_plural = "По источникам"
