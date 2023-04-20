@@ -11,7 +11,7 @@ class SimpleMiddleware:
         if app:
             if Source.objects.filter(shortcut=app).exists():
                 source = Source.objects.get(shortcut=app)
-                mark = Mark.objects.get_or_create(app=source)
+                mark, _ = Mark.objects.get_or_create(app=source)
                 mark.requests_counter+=1
                 mark.save()
             else:
@@ -20,23 +20,25 @@ class SimpleMiddleware:
                                                 description='Пользователь подключился из неопознанного источника',
                                                 shortcut='-')
                     source.save()
-                    mark = Mark.objects.get_or_create(app=source)
+                    mark, _ = Mark.objects.get_or_create(app=source)
                     mark.requests_counter+=1
                     mark.save()
                 else:
                     source = Source.objects.get(name='Не опознано')
-                    Mark.objects.get_or_create(app=source).save()
+                    mark, _ = Mark.objects.get_or_create(app=source)
+                    mark.requests_counter+=1
+                    mark.save()
         else:
             if not Source.objects.filter(name='Напрямую').exists():
                 source = Source.objects.create(name='Напрямую', description='Пользователь подключился напрямую',
                                             shortcut='-')
                 source.save()
-                mark = Mark.objects.get_or_create(app=source)
+                mark, _ = Mark.objects.get_or_create(app=source)
                 mark.requests_counter+=1
                 mark.save()
             else:
                 source = Source.objects.get(name='Напрямую')
-                mark = Mark.objects.get_or_create(app=source)
+                mark, _ = Mark.objects.get_or_create(app=source)
                 mark.requests_counter+=1
                 mark.save()
         return self._get_response(request)
