@@ -1,31 +1,34 @@
 from django.contrib import admin
-from .models import Geo, Mark, Source
+from .models import GeoCounter, Mark, Source, Guest
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count, Sum
 import json
-from itertools import chain
 
-@admin.register(Geo)
+
+@admin.register(Guest)
+class GuestAdmin(admin.ModelAdmin):
+    list_display = ['ip', 'visited_at']
+
+@admin.register(GeoCounter)
 class GeoAdmin(admin.ModelAdmin):
-    list_display = ['country', 'city']
-    change_list_template = 'change_list_geo.html'
+    list_display = ['country', 'requests_counter']
+    change_list_template = 'admin/change_list_geo.html'
 
     def changelist_view(self, request, extra_context=None):
-        pre_count = 1/5*Geo.objects.all().count()
         chart_data = (
-            chain(
-            Geo.objects.values('country').annotate(requests=Count('country')).filter(requests__gte=pre_count),
-            [sum(geo['requests'] for geo in Geo.objects.values('country').annotate(requests=Count('country')).filter(requests__lt=pre_count))]
-            )
+            GeoCounter.objects.values()
         )
         as_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
-        print(as_json)
-        extra_context = extra_context or {"chart_data": as_json}
+        extra_context = extra_context or {
+            "chart_data": as_json,
+
+        }
         return super().changelist_view(request, extra_context)
+
 
 @admin.register(Mark)
 class MarkAdmin(admin.ModelAdmin):
     list_display = ['app']
+
 
 @admin.register(Source)
 class SourceAdmin(admin.ModelAdmin):

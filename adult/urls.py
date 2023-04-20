@@ -6,7 +6,6 @@ from .settings import MEDIA_ROOT, STATIC_ROOT, DEBUG
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('girls/', include('girl.urls')),
-    path('', include('analytics.urls'))
 ]
 
 if DEBUG:

@@ -58,8 +58,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'analytics.middleware.geo.GeoPosMiddleware',
-#    'girl.middleware.skiprussian.SkipperMiddleware',
+    'analytics.middleware.guest.SimpleMiddleware',
+    'analytics.middleware.geo.SimpleMiddleware',
+    'analytics.middleware.utm.SimpleMiddleware',
 ]
 
 ROOT_URLCONF = 'adult.urls'

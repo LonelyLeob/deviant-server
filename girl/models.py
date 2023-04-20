@@ -2,8 +2,10 @@ import os
 from django.db import models
 from django.dispatch import receiver
 
+
 def upload_to_girls(instance, filename):
     return f"girls/{instance.girl.nickname}/{filename}"
+
 
 class Girl(models.Model):
     nickname = models.CharField("Псевдоним", max_length=50)
@@ -17,10 +19,11 @@ class Girl(models.Model):
     @property
     def links(self):
         return self.links_set.all()
-    
+
     class Meta:
         verbose_name = 'Девочка'
         verbose_name_plural = 'Девочки'
+
 
 class Avatar(models.Model):
     avatar = models.ImageField("Фото девочки", upload_to=upload_to_girls)
@@ -33,12 +36,14 @@ class Avatar(models.Model):
         verbose_name = 'Аватар'
         verbose_name_plural = 'Аватары'
 
+
 @receiver(models.signals.post_delete, sender=Avatar)
 def post_save_image(sender, instance, *args, **kwargs):
     try:
         instance.avatar.delete(save=False)
     except:
         pass
+
 
 @receiver(models.signals.pre_save, sender=Avatar)
 def pre_save_image(sender, instance, *args, **kwargs):
@@ -64,7 +69,7 @@ class Link(models.Model):
 
     def __str__(self) -> str:
         return f"Ресурс для {self.girl.slug}"
-    
+
     class Meta:
         verbose_name = 'Ссылка'
         verbose_name_plural = 'Ссылки'

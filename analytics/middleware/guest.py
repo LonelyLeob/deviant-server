@@ -1,6 +1,6 @@
 from django.http import HttpRequest
-from django.contrib.gis.geoip2 import GeoIP2
-from ..models import GeoCounter
+from ..models import Guest
+
 
 class SimpleMiddleware:
     def __init__(self, get_response) -> None:
@@ -9,15 +9,8 @@ class SimpleMiddleware:
     def __call__(self, request: HttpRequest):
         response = self._get_response(request)
         ip = self._process_ip(request)
-        if ip and ip != "127.0.0.1":
-            geocoder = GeoIP2()
-            country = geocoder.country_name(ip)
-            if GeoCounter.objects.filter(country=country).exists():
-                counter = GeoCounter.objects.get(country=country)
-                counter.requests_counter+=1
-                counter.save()
-            else:
-                GeoCounter.objects.create(country=country).save()
+        if ip:
+            Guest.objects.create(ip=ip).save() if not Guest.objects.filter(ip=ip).exists() else True
         return response
 
     def _process_ip(self, request: HttpRequest):
