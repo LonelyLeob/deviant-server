@@ -27,7 +27,7 @@ class GeoAdmin(admin.ModelAdmin):
 
 @admin.register(Mark)
 class MarkAdmin(admin.ModelAdmin):
-    list_display = ['country', 'requests_counter']
+    list_display = ['app', 'requests_counter']
 
 
 @admin.register(Source)
