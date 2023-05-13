@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.auth.models import User, Group
 from .models import Girl, Link, Avatar
 
 class LinkInline(admin.TabularInline):
@@ -20,7 +19,5 @@ class GirlAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('nickname',)}
     inlines = [LinkInline, AvatarInline]
 
-admin.site.unregister(User)
-admin.site.unregister(Group)
-admin.site.site_header = 'Fans4YouAdmin'
-admin.site.site_title = 'Fans4YouAdmin'
+admin.site.site_header = "Deviant Girl'sss"
+admin.site.site_title = "Deviant Girl'sss"

@@ -13,7 +13,7 @@ class Guest(models.Model):
         verbose_name_plural = 'По уникальности'
 
 class GeoCounter(models.Model):
-    country = models.CharField("Страна", max_length=50)
+    country = models.CharField("Страна", max_length=70)
     requests_counter = models.IntegerField("Кол-во запросов", default=0)
 
     def __str__(self) -> str:

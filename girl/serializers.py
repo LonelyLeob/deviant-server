@@ -1,12 +1,11 @@
 from rest_framework import serializers
-from django.contrib.gis.geoip2 import GeoIP2
 from .models import Girl, Link, Avatar
+from .utils import func_table
 
 class LinkSerializer(serializers.ModelSerializer):
-    pic = serializers.ImageField()
     class Meta:
         model = Link
-        fields = ['title', 'link', 'pic', 'flag']
+        fields = ['title', 'link', 'flag']
 
 class AvatarSerializer(serializers.ModelSerializer):
     avatar = serializers.ImageField()
@@ -17,19 +16,14 @@ class AvatarSerializer(serializers.ModelSerializer):
 class GirlSerializer(serializers.ModelSerializer):
     links = LinkSerializer(many=True)
     avatars = AvatarSerializer(many=True)
-    geo = serializers.SerializerMethodField("_geo")
+    additional_info = serializers.SerializerMethodField("_info")
 
     class Meta:
         model = Girl
-        fields = ['avatars', 'nickname', 'additional_info',  'links', 'geo']
+        fields = ['avatars', 'nickname', 'additional_info',  'links']
 
-    def _geo(self, _: Girl):
-        x_forwarded_for = self.context['request'].META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
-        else:
-            ip = self.context['request'].META.get('REMOTE_ADDR')
-        geocoder = GeoIP2()
-        # if ip == "127.0.0.1":
-        #     return "Moscow"
-        return geocoder.city(ip)['city']
+    def _info(self, obj: Girl):
+        tag = obj.additional_info[obj.additional_info.find("{")+len("{"):obj.additional_info.rfind("}")]
+        if tag in func_table:
+            return obj.additional_info.replace("{"+tag+"}", func_table[tag](self.context["request"]))
+        return obj.additional_info

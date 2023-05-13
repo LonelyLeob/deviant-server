@@ -10,8 +10,7 @@ def upload_to_girls(instance, filename):
 class Girl(models.Model):
     nickname = models.CharField("Псевдоним", max_length=50)
     additional_info = models.CharField("Добавочное описание", max_length=200)
-    domain = models.CharField("Домен девушки", max_length=200)
-    slug = models.SlugField("Ярлык для URL")
+    slug = models.SlugField("Ярлык для URL", null=False)
 
     def __str__(self) -> str:
         return self.nickname
@@ -24,10 +23,9 @@ class Girl(models.Model):
         verbose_name = 'Девочка'
         verbose_name_plural = 'Девочки'
 
-
 class Avatar(models.Model):
-    avatar = models.ImageField("Фото девочки", upload_to=upload_to_girls)
-    girl = models.ForeignKey(Girl, verbose_name="Связь к девочке", on_delete=models.CASCADE, related_name="avatars")
+    avatar = models.ImageField("Фото девочки", upload_to=upload_to_girls, null=True)
+    girl = models.ForeignKey(Girl, verbose_name="Связь к девочке", on_delete=models.CASCADE, related_name="avatars", null=True)
 
     def __str__(self) -> str:
         return f"Аватар для {self.girl}"
@@ -47,7 +45,6 @@ def post_save_image(sender, instance, *args, **kwargs):
 
 @receiver(models.signals.pre_save, sender=Avatar)
 def pre_save_image(sender, instance, *args, **kwargs):
-    print(instance)
     try:
         old_img = instance.__class__.objects.get(id=instance.id).avatar.path
         try:
@@ -62,9 +59,9 @@ def pre_save_image(sender, instance, *args, **kwargs):
 
 
 class Link(models.Model):
-    title = models.CharField("Название ссылки", max_length=200)
-    girl = models.ForeignKey(Girl, on_delete=models.PROTECT, related_name="links", verbose_name="Девочка")
-    link = models.URLField("Ссылка на источник", max_length=200)
+    title = models.CharField("Название ссылки", max_length=200, null=True)
+    girl = models.ForeignKey(Girl, on_delete=models.PROTECT, related_name="links", verbose_name="Девочка", null=True)
+    link = models.URLField("Ссылка на источник", max_length=200, null=True)
     flag = models.BooleanField("Заглавная ссылка?", default=False)
 
     def __str__(self) -> str:

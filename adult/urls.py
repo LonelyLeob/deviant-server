@@ -10,4 +10,4 @@ urlpatterns = [
 
 if DEBUG:
     urlpatterns += static("media/", document_root=MEDIA_ROOT)
-    urlpatterns += static("media/", document_root=STATIC_ROOT)
+    urlpatterns += static("static/", document_root=STATIC_ROOT)
