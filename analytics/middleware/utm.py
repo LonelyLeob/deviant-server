@@ -1,11 +1,11 @@
-from django.core.handlers.wsgi import WSGIRequest
 from ..models import Source, Mark
 from girl.models import Girl
-from .simple import SimpleMiddleware
+from .simple import SimpleMiddleware, IPMiddlewareMixin
+from django.core.exceptions import ObjectDoesNotExist
 
 
-class UTMMiddleware(SimpleMiddleware):
-    def __call__(self, request: WSGIRequest):
+class UTMMiddleware(SimpleMiddleware, IPMiddlewareMixin):
+    def __call__(self, request):
         response = self._get_response(request)
         app = request.GET.get('app')
         origin = request.headers.get('Origin')
@@ -67,3 +67,24 @@ class UTMMiddleware(SimpleMiddleware):
                 mark.requests_counter+=1
                 mark.save()
         return response
+    
+class MarkMiddleware(SimpleMiddleware, IPMiddlewareMixin):
+    def __call__(self, request):
+        if "admin" in request.get_full_path():
+            return self._get_response(request)
+        app, origin = request.GET.get('app'), request.headers.get('Origin')
+        if origin:
+            try:
+                girl = Girl.objects.get(domain=origin)
+            except Exception:
+                return self._get_response()
+            if app:
+                try:
+                    source = Source.objects.get(name=app)
+                except ObjectDoesNotExist:
+                    source = Source.objects.create(name="Не опознано", shortcut="-", description="Неопознанное приложение")
+            source = Source.objects.get_or_create(name="Напрямую", shortcut="-", description="Без использования приложений")
+            mark, _ = Mark.objects.get_or_create(app=source, girl=girl)
+            mark.requests_counter+=1
+            mark.save()
+        return self._get_response(request)

@@ -10,6 +10,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    'localhost',
     'deviant-girls.online',
 ]
 
@@ -38,7 +39,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'analytics.middleware.guest.GuestMiddleware',
     'analytics.middleware.geo.GeoMiddleware',
-    'analytics.middleware.utm.UTMMiddleware',
+    'analytics.middleware.utm.MarkMiddleware',
 ]
 
 ROOT_URLCONF = 'adult.urls'

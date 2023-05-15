@@ -2,9 +2,9 @@ from django.http import HttpRequest
 from django.contrib.gis.geoip2 import GeoIP2
 from ..models import GeoCounter
 from girl.models import Girl
-from .simple import SimpleMiddleware
+from .simple import SimpleMiddleware, IPMiddlewareMixin
 
-class GeoMiddleware(SimpleMiddleware):
+class GeoMiddleware(SimpleMiddleware, IPMiddlewareMixin):
     def __call__(self, request: HttpRequest):
         ip = self._process_ip(request)
         if ip and ip != "127.0.0.1":
