@@ -6,6 +6,8 @@ from .simple import SimpleMiddleware, IPMiddlewareMixin
 
 class GeoMiddleware(SimpleMiddleware, IPMiddlewareMixin):
     def __call__(self, request: HttpRequest):
+        if "admin" in request.get_full_path():
+            return self._get_response(request)
         ip = self._process_ip(request)
         if ip and ip != "127.0.0.1":
             origin = request.headers.get('Origin')
