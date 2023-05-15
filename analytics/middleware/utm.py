@@ -83,10 +83,11 @@ class MarkMiddleware(SimpleMiddleware, IPMiddlewareMixin):
                     source = Source.objects.get(name=app)
                 except ObjectDoesNotExist:
                     source = Source.objects.create(name="Не опознано", shortcut="-", description="Неопознанное приложение")
-            try:
-                source = Source.objects.get(name="Напрямую")
-            except ObjectDoesNotExist:
-                source = Source.objects.create(name="Напрямую", shortcut="-", description="Пользователь подключился напрямую")
+            else:
+                try:
+                    source = Source.objects.get(name="Напрямую")
+                except ObjectDoesNotExist:
+                    source = Source.objects.create(name="Напрямую", shortcut="-", description="Пользователь подключился напрямую")
             mark, _ = Mark.objects.get_or_create(app=source, girl=girl)
             mark.requests_counter+=1
             mark.save()
