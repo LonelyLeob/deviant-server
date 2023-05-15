@@ -7,6 +7,9 @@ class UTMMiddleware(SimpleMiddleware):
     def __call__(self, request: WSGIRequest):
         response = self._get_response(request)
         app = request.GET.get('app')
+        host = request.headers.get('Host')
+        if not host:
+            return response
         if app:
             if Source.objects.filter(shortcut=app).exists():
                 source = Source.objects.get(shortcut=app)

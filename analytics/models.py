@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from girl.models import Girl
 
 class Guest(models.Model):
     ip = models.GenericIPAddressField("IP пользователя", protocol="both", unpack_ipv4=False)
@@ -15,6 +16,8 @@ class Guest(models.Model):
 class GeoCounter(models.Model):
     country = models.CharField("Страна", max_length=70)
     requests_counter = models.IntegerField("Кол-во запросов", default=0)
+    girl = models.ForeignKey(Girl, verbose_name="Девочка", on_delete=models.CASCADE, related_name="geos_girl", null=True)
+
 
     def __str__(self) -> str:
         return str(self.country)
@@ -37,8 +40,9 @@ class Source(models.Model):
 
 
 class Mark(models.Model):
-    app = models.ForeignKey(Source, verbose_name="Название источника", on_delete=models.CASCADE, related_name="marks")
+    app = models.ForeignKey(Source, verbose_name="Название источника", on_delete=models.CASCADE, related_name="marks_source", null=True)
     requests_counter = models.IntegerField("Кол-во запросов", default=0)
+    girl = models.ForeignKey(Girl, verbose_name="Девочка", on_delete=models.CASCADE, related_name="marks_girl", null=True)
 
     def __str__(self) -> str:
         return f"Метка от источника {self.app}"
