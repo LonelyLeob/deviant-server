@@ -16,13 +16,19 @@ class UTMMiddleware(SimpleMiddleware):
         if app:
             if Source.objects.filter(shortcut=app).exists():
                 source = Source.objects.get(shortcut=app)
-                girl = Girl.objects.get(domain=origin)
+                try:
+                    girl = Girl.objects.get(domain=origin)
+                except:
+                    girl = None                
                 mark, _ = Mark.objects.get_or_create(app=source, girl=girl)
                 mark.requests_counter+=1
                 mark.save()
             else:
                 if not Source.objects.filter(name='Не опознано').exists():
-                    girl = Girl.objects.get(domain=origin)
+                    try:
+                        girl = Girl.objects.get(domain=origin)
+                    except:
+                        girl = None
                     source = Source.objects.create(name='Не опознано',
                                                 description='Пользователь подключился из неопознанного источника',
                                                 shortcut='-',)
@@ -31,14 +37,20 @@ class UTMMiddleware(SimpleMiddleware):
                     mark.requests_counter+=1
                     mark.save()
                 else:
-                    girl = Girl.objects.get(domain=origin)
+                    try:
+                        girl = Girl.objects.get(domain=origin)
+                    except:
+                        girl = None
                     source = Source.objects.get(name='Не опознано')
                     mark, _ = Mark.objects.get_or_create(app=source, girl=girl)
                     mark.requests_counter+=1
                     mark.save()
         else:
-            girl = Girl.objects.get(domain=origin)
             if not Source.objects.filter(name='Напрямую').exists():
+                try:
+                    girl = Girl.objects.get(domain=origin)
+                except:
+                    girl = None
                 source = Source.objects.create(name='Напрямую', description='Пользователь подключился напрямую',
                                             shortcut='-')
                 source.save()
@@ -46,7 +58,10 @@ class UTMMiddleware(SimpleMiddleware):
                 mark.requests_counter+=1
                 mark.save()
             else:
-                girl = Girl.objects.get(domain=origin)
+                try:
+                    girl = Girl.objects.get(domain=origin)
+                except:
+                    girl = None
                 source = Source.objects.get(name='Напрямую')
                 mark, _ = Mark.objects.get_or_create(app=source, girl=girl)
                 mark.requests_counter+=1

@@ -9,7 +9,10 @@ class GeoMiddleware(SimpleMiddleware):
         ip = self._process_ip(request)
         if ip and ip != "127.0.0.1":
             origin = request.headers.get('Origin')
-            girl = Girl.objects.get(domain=origin)
+            try:
+                girl = Girl.objects.get(domain=origin)
+            except:
+                girl = None
             geocoder = GeoIP2()
             country = geocoder.country_name(ip)
             counter, _ = GeoCounter.objects.get_or_create(country=country, girl=girl)
