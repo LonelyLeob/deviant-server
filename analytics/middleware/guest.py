@@ -6,7 +6,7 @@ from .simple import SimpleMiddleware, IPMiddlewareMixin
 
 class GuestMiddleware(SimpleMiddleware, IPMiddlewareMixin):
     def __call__(self, request):
-        if "admin" in request.get_full_path():
+        if "admin" in request.get_full_path() or "media" in request.get_full_path():
             return self._get_response(request)
         ip = self._process_ip(request)
         origin = request.headers.get('Origin')

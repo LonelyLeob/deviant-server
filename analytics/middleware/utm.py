@@ -6,10 +6,9 @@ from django.http import HttpResponse
     
 class MarkMiddleware(SimpleMiddleware, IPMiddlewareMixin):
     def __call__(self, request):
-        if "admin" in request.get_full_path():
+        if "admin" in request.get_full_path() or "media" in request.get_full_path():
             return self._get_response(request)
         app, origin = request.GET.get('app'), request.headers.get('Origin')
-
         try:
             girl = Girl.objects.get(domain=origin)
         except Exception:

@@ -3,12 +3,11 @@ from django.contrib.gis.geoip2 import GeoIP2
 from ..models import GeoCounter
 from girl.models import Girl
 from .simple import SimpleMiddleware, IPMiddlewareMixin
-from django.core.exceptions import ObjectDoesNotExist, BadRequest
 
 
 class GeoMiddleware(SimpleMiddleware, IPMiddlewareMixin):
     def __call__(self, request):
-        if "admin" in request.get_full_path():
+        if "admin" in request.get_full_path() or "media" in request.get_full_path():
             return self._get_response(request)
         ip = self._process_ip(request)
         if ip and ip != "127.0.0.1":
