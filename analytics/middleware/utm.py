@@ -1,7 +1,7 @@
 from ..models import Source, Mark
 from girl.models import Girl
 from .simple import SimpleMiddleware, IPMiddlewareMixin
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, BadRequest
 
 
 class UTMMiddleware(SimpleMiddleware, IPMiddlewareMixin):
@@ -77,12 +77,12 @@ class MarkMiddleware(SimpleMiddleware, IPMiddlewareMixin):
             try:
                 girl = Girl.objects.get(domain=origin)
             except Exception:
-                return self._get_response()
+                raise BadRequest
             if app:
                 try:
-                    source = Source.objects.get(name=app)
+                    source = Source.objects.get(shortcut=app)
                 except ObjectDoesNotExist:
-                    source = Source.objects.create(name="Не опознано", shortcut="-", description="Неопознанное приложение")
+                    source = Source.objects.get_or_create(name="Не опознано", shortcut="-", description="Неопознанное приложение")
             else:
                 try:
                     source = Source.objects.get(name="Напрямую")
