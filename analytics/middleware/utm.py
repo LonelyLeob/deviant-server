@@ -17,7 +17,10 @@ class MarkMiddleware(SimpleMiddleware, IPMiddlewareMixin):
             try:
                 source = Source.objects.get(shortcut=app)
             except ObjectDoesNotExist:
-                source = Source.objects.get_or_create(name="Не опознано", shortcut="-", description="Неопознанное приложение")
+                try:
+                    source = Source.objects.get(name="Не опознано")
+                except ObjectDoesNotExist:
+                    source = Source.objects.create(name="Не опознано", shortcut="-", description="Неопознанное приложение")
         else:
             try:
                 source = Source.objects.get(name="Напрямую")
