@@ -1,0 +1,17 @@
+[Unit]
+Description=deviant girls gunicorn service
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/home/girls/deviant-server
+ExecStart=/home/girls/venv/bin/gunicorn --error-logfile /var/log/gunicorn/error.log --access-logfile /var/log/gunicorn/access.log adult.wsgi
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target
+
