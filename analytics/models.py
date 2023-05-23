@@ -5,6 +5,7 @@ from girl.models import Girl
 class Guest(models.Model):
     ip = models.GenericIPAddressField("IP пользователя", protocol="both", unpack_ipv4=False)
     visited_at = models.DateTimeField("Дата захода", default=timezone.now)
+    girl = models.ForeignKey(Girl, verbose_name="Девочка", on_delete=models.CASCADE, related_name="geos_girl", null=True)
 
     def __str__(self) -> str:
         return str(self.ip)
