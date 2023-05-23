@@ -1,7 +1,8 @@
 from ..models import Source, Mark
 from girl.models import Girl
 from .simple import SimpleMiddleware, IPMiddlewareMixin
-from django.core.exceptions import ObjectDoesNotExist, BadRequest
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
     
 class MarkMiddleware(SimpleMiddleware, IPMiddlewareMixin):
     def __call__(self, request):
@@ -12,7 +13,7 @@ class MarkMiddleware(SimpleMiddleware, IPMiddlewareMixin):
             try:
                 girl = Girl.objects.get(domain=origin)
             except Exception:
-                raise BadRequest
+                return HttpResponse(status=400)
             if app:
                 try:
                     source = Source.objects.get(shortcut=app)

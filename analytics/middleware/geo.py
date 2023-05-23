@@ -1,4 +1,4 @@
-from django.http import HttpRequest
+from django.http import HttpResponse
 from django.contrib.gis.geoip2 import GeoIP2
 from ..models import GeoCounter
 from girl.models import Girl
@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist, BadRequest
 
 
 class GeoMiddleware(SimpleMiddleware, IPMiddlewareMixin):
-    def __call__(self, request: HttpRequest):
+    def __call__(self, request):
         if "admin" in request.get_full_path():
             return self._get_response(request)
         ip = self._process_ip(request)
@@ -16,7 +16,7 @@ class GeoMiddleware(SimpleMiddleware, IPMiddlewareMixin):
             try:
                 girl = Girl.objects.get(domain=origin)
             except:
-                raise BadRequest
+                return HttpResponse(status=400)
             geocoder = GeoIP2()
             country = geocoder.country_name(ip)
             counter, _ = GeoCounter.objects.get_or_create(country=country, girl=girl)
