@@ -7,6 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist, BadRequest
 
 class GuestMiddleware(SimpleMiddleware, IPMiddlewareMixin):
     def __call__(self, request: HttpRequest):
+        if "admin" in request.get_full_path():
+            return self._get_response(request)
         ip = self._process_ip(request)
         origin = request.headers.get('Origin')
         if origin:
