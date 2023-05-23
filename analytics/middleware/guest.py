@@ -10,11 +10,10 @@ class GuestMiddleware(SimpleMiddleware, IPMiddlewareMixin):
             return self._get_response(request)
         ip = self._process_ip(request)
         origin = request.headers.get('Origin')
-        if origin:
-            try:
-                girl = Girl.objects.get(domain=origin)
-            except Exception:
-                return HttpResponse(status=400)
+        try:
+            girl = Girl.objects.get(domain=origin)
+        except Exception:
+            return HttpResponse(status=400)
         if ip:
             Guest.objects.get_or_create(ip=ip, girl=girl)
         return self._get_response(request)

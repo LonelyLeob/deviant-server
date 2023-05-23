@@ -9,22 +9,22 @@ class MarkMiddleware(SimpleMiddleware, IPMiddlewareMixin):
         if "admin" in request.get_full_path():
             return self._get_response(request)
         app, origin = request.GET.get('app'), request.headers.get('Origin')
-        if origin:
+
+        try:
+            girl = Girl.objects.get(domain=origin)
+        except Exception:
+            return HttpResponse(status=400)
+        if app:
             try:
-                girl = Girl.objects.get(domain=origin)
-            except Exception:
-                return HttpResponse(status=400)
-            if app:
-                try:
-                    source = Source.objects.get(shortcut=app)
-                except ObjectDoesNotExist:
-                    source = Source.objects.get_or_create(name="Не опознано", shortcut="-", description="Неопознанное приложение")
-            else:
-                try:
-                    source = Source.objects.get(name="Напрямую")
-                except ObjectDoesNotExist:
-                    source = Source.objects.create(name="Напрямую", shortcut="-", description="Пользователь подключился напрямую")
-            mark, _ = Mark.objects.get_or_create(app=source, girl=girl)
-            mark.requests_counter+=1
-            mark.save()
+                source = Source.objects.get(shortcut=app)
+            except ObjectDoesNotExist:
+                source = Source.objects.get_or_create(name="Не опознано", shortcut="-", description="Неопознанное приложение")
+        else:
+            try:
+                source = Source.objects.get(name="Напрямую")
+            except ObjectDoesNotExist:
+                source = Source.objects.create(name="Напрямую", shortcut="-", description="Пользователь подключился напрямую")
+        mark, _ = Mark.objects.get_or_create(app=source, girl=girl)
+        mark.requests_counter+=1
+        mark.save()
         return self._get_response(request)
