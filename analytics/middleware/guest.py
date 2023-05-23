@@ -13,7 +13,7 @@ class GuestMiddleware(SimpleMiddleware, IPMiddlewareMixin):
         try:
             girl = Girl.objects.get(domain=origin)
         except Exception:
-            return HttpResponse(status=400)
+            return HttpResponse(content="Exception in UNIQUE", status=400)
         if ip:
             Guest.objects.get_or_create(ip=ip, girl=girl)
         return self._get_response(request)

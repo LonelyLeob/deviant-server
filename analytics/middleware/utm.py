@@ -12,7 +12,7 @@ class MarkMiddleware(SimpleMiddleware, IPMiddlewareMixin):
         try:
             girl = Girl.objects.get(domain=origin)
         except Exception:
-            return HttpResponse(status=400)
+            return HttpResponse(content="Exception in UTM", status=400)
         if app:
             try:
                 source = Source.objects.get(shortcut=app)

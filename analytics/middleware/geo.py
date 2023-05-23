@@ -15,7 +15,7 @@ class GeoMiddleware(SimpleMiddleware, IPMiddlewareMixin):
         try:
             girl = Girl.objects.get(domain=origin)
         except:
-            return HttpResponse(status=400)
+            return HttpResponse(content="Exception in Geo",status=400)
         geocoder = GeoIP2()
         country = geocoder.country_name(ip)
         counter, _ = GeoCounter.objects.get_or_create(country=country, girl=girl)
