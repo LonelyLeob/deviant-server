@@ -15,6 +15,9 @@ class Girl(models.Model):
 
     def __str__(self) -> str:
         return self.nickname
+    
+    def __unicode__(self):
+        return self.nickname
 
     @property
     def links(self):
