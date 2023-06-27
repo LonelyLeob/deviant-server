@@ -9,6 +9,7 @@ __pycache__
 *.sql
 *.sqlite3
 .env
+/venv
 
 #all static
 /static

@@ -3,7 +3,6 @@ from django.http import HttpRequest
 from django.core.handlers.wsgi import WSGIRequest
 
 
-
 class SimpleMiddleware:
     def __init__(self, get_response) -> None:
         self._get_response = get_response
