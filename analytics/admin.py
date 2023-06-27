@@ -1,5 +1,4 @@
 from django.contrib import admin
-from daterange_filter.filter import DateRangeFilter
 from .models import GeoCounter, Mark, Source, Guest
 
 
@@ -7,7 +6,8 @@ from .models import GeoCounter, Mark, Source, Guest
 class GuestAdmin(admin.ModelAdmin):
     list_display = ['ip', 'visited_at']
     search_fields = ['girl__nickname']
-    list_filter = ['girl', ('visited_at', DateRangeFilter)]
+    list_filter = ['girl']
+    date_hierarchy = 'visited_at'
 
 @admin.register(GeoCounter)
 class GeoAdmin(admin.ModelAdmin):

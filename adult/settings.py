@@ -21,7 +21,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'daterange_filter',
     'rest_framework',
     'corsheaders',
     'geoip2',
